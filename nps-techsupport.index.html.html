@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NPS — Единая техподдержка</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+  :root {
+    --green-dark: #004040;
+    --green-mid: #0a5252;
+    --green-light: #146b6b;
+    --gold: #C9A84C;
+    --gold-light: #E2CB7D;
+    --gold-pale: #F5EDDA;
+    --white: #FFFFFF;
+    --text-muted: #7fb3b3;
+    --bg-card: rgba(255,255,255,0.06);
+    --bg-card-hover: rgba(255,255,255,0.10);
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--green-dark);
+    color: var(--gold-pale);
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    opacity: 0.04;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200' viewBox='0 0 200 200'%3E%3Cg fill='%23C9A84C' fill-opacity='1'%3E%3Cpath d='M30 30c-6 0-11 5-11 11v6c0 2.2 1.8 4 4 4s4-1.8 4-4v-6c0-1.7 1.3-3 3-3s3 1.3 3 3v6c0 2.2 1.8 4 4 4s4-1.8 4-4v-6c0-6-5-11-11-11zm-7 24c-1.7 0-3 1.3-3 3v4c0 1.7 1.3 3 3 3s3-1.3 3-3v-4c0-1.7-1.3-3-3-3zm14 0c-1.7 0-3 1.3-3 3v4c0 1.7 1.3 3 3 3s3-1.3 3-3v-4c0-1.7-1.3-3-3-3z'/%3E%3Cpath d='M140 25c-1.1 0-2 .3-2.8.8l-4.4 3.3c-1 .8-1.6 2-1.6 3.2v1.4c0 5.5 2.2 10.8 6 14.7 3.9 3.9 9.2 6 14.7 6h1.4c1.2 0 2.4-.6 3.2-1.6l3.3-4.4c1-1.4 1-3.2-.1-4.5l-5-5c-1-.9-2.4-1.2-3.7-.7l-3.5 1.2c-1 .3-2.1 0-2.8-.8l-3.2-3.2c-.8-.8-1.1-1.8-.8-2.8l1.2-3.5c.4-1.3.2-2.7-.7-3.7l-5-5c-.7-.7-1.5-1-2.4-1z' transform='scale(0.7) translate(40,5)'/%3E%3Cpath d='M100 120a15 15 0 110 30 15 15 0 010-30zm0 5a10 10 0 100 20 10 10 0 000-20zm-2-10h4l1 5.1a17 17 0 014.5 2.6l4.7-2 2 3.5-3.7 3.1a17 17 0 010 5.2l3.7 3.1-2 3.5-4.7-2a17 17 0 01-4.5 2.6l-1 5.1h-4l-1-5.1a17 17 0 01-4.5-2.6l-4.7 2-2-3.5 3.7-3.1a17 17 0 010-5.2l-3.7-3.1 2-3.5 4.7 2a17 17 0 014.5-2.6z'/%3E%3Cpath d='M160 140h20c2.2 0 4 1.8 4 4v14c0 2.2-1.8 4-4 4h-6l-4 5-4-5h-6c-2.2 0-4-1.8-4-4v-14c0-2.2 1.8-4 4-4zm4 6h12v2h-12zm0 5h8v2h-8z'/%3E%3Cpath d='M30 150c-1 0-1.8.4-2.5 1 3.5-3.5 9.5-3.5 13 0-.7-.6-1.5-1-2.5-1-1.5 0-2.8.6-4 1.5-1.2-.9-2.5-1.5-4-1.5zm4 4a2 2 0 100 4 2 2 0 000-4zm0-10c-3.5 0-6.7 1.4-9 3.7l2 2c1.8-1.8 4.3-2.9 7-2.9s5.2 1.1 7 2.9l2-2c-2.3-2.3-5.5-3.7-9-3.7z'/%3E%3C/g%3E%3C/svg%3E");
+    background-size: 200px 200px;
+    pointer-events: none;
+  }
+
+  .container {
+    position: relative;
+    z-index: 1;
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 40px 20px 60px;
+  }
+
+  .header { text-align: center; margin-bottom: 36px; }
+  .header__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(201,168,76,0.12);
+    border: 1px solid rgba(201,168,76,0.25);
+    border-radius: 100px;
+    padding: 6px 16px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--gold);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+  .header h1 {
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--gold-light);
+    line-height: 1.3;
+    margin-bottom: 8px;
+  }
+  .header p {
+    font-size: 14px;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  .progress {
+    background: rgba(255,255,255,0.08);
+    border-radius: 100px;
+    height: 6px;
+    margin-bottom: 32px;
+    overflow: hidden;
+  }
+  .progress__bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--gold), var(--gold-light));
+    border-radius: 100px;
+    transition: width 0.5s ease;
+  }
+  .progress__label {
+    font-size: 12px;
+    color: var(--text-muted);
+    text-align: right;
+    margin-bottom: 6px;
+  }
+
+  .question {
+    background: var(--bg-card);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 16px;
+    padding: 28px 24px;
+    margin-bottom: 24px;
+    backdrop-filter: blur(8px);
+    display: none;
+  }
+  .question.active { display: block; animation: fadeIn 0.4s ease; }
+
+  @keyframes fadeIn { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
+
+  .question__number {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--gold);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .question__text {
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--gold-pale);
+    line-height: 1.5;
+    margin-bottom: 20px;
+  }
+
+  /* NPS scale */
+  .nps-scale {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .nps-scale button {
+    width: 44px; height: 44px;
+    border-radius: 10px;
+    border: 1px solid rgba(201,168,76,0.2);
+    background: rgba(201,168,76,0.06);
+    color: var(--gold-pale);
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: inherit;
+  }
+  .nps-scale button:hover { background: rgba(201,168,76,0.18); border-color: var(--gold); }
+  .nps-scale button.selected { background: var(--gold); color: var(--green-dark); border-color: var(--gold); }
+  .nps-labels { display:flex; justify-content:space-between; font-size:11px; color:var(--text-muted); margin-top:8px; }
+
+  /* Star rating */
+  .stars { display: flex; gap: 8px; justify-content: center; }
+  .stars button {
+    background: none; border: none;
+    font-size: 32px; cursor: pointer;
+    color: rgba(201,168,76,0.25);
+    transition: all 0.2s;
+    padding: 4px;
+  }
+  .stars button:hover, .stars button.lit { color: var(--gold); transform: scale(1.15); }
+
+  /* Option buttons */
+  .options { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+  .options button {
+    padding: 10px 24px;
+    border-radius: 10px;
+    border: 1px solid rgba(201,168,76,0.2);
+    background: rgba(201,168,76,0.06);
+    color: var(--gold-pale);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: inherit;
+  }
+  .options button:hover { background: rgba(201,168,76,0.18); border-color: var(--gold); }
+  .options button.selected { background: var(--gold); color: var(--green-dark); border-color: var(--gold); }
+
+  /* Textarea */
+  .open-text {
+    width: 100%;
+    min-height: 100px;
+    background: rgba(0,0,0,0.2);
+    border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 12px;
+    padding: 14px 16px;
+    color: var(--gold-pale);
+    font-size: 14px;
+    font-family: inherit;
+    resize: vertical;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .open-text::placeholder { color: var(--text-muted); }
+  .open-text:focus { border-color: var(--gold); }
+
+  .nav { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; }
+  .btn {
+    padding: 12px 28px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    font-family: inherit;
+    transition: all 0.25s;
+  }
+  .btn--ghost {
+    background: none;
+    color: var(--text-muted);
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+  .btn--ghost:hover { border-color: var(--gold); color: var(--gold-pale); }
+  .btn--primary {
+    background: linear-gradient(135deg, var(--gold), var(--gold-light));
+    color: var(--green-dark);
+  }
+  .btn--primary:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(201,168,76,0.3); }
+  .btn:disabled { opacity:0.35; cursor:default; transform:none; box-shadow:none; }
+
+  .thankyou { display: none; text-align: center; padding: 60px 20px; }
+  .thankyou.active { display: block; animation: fadeIn 0.5s ease; }
+  .thankyou svg { margin-bottom: 20px; }
+  .thankyou h2 { font-size: 24px; color: var(--gold-light); margin-bottom: 10px; }
+  .thankyou p { font-size: 14px; color: var(--text-muted); line-height: 1.6; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <div class="header__badge">
+      Единая техподдержка IT, телефонии и аналитики
+    </div>
+    <h1>Оцените работу техподдержки</h1>
+    <p>7 коротких вопросов, которые помогут нам стать лучше.<br>Ответы анонимны.</p>
+  </div>
+
+  <div class="progress__label" id="progLabel">Вопрос 1 из 7</div>
+  <div class="progress"><div class="progress__bar" id="progBar" style="width:14.28%"></div></div>
+
+  <!-- Q1: Reflex -->
+  <div class="question active" data-q="1">
+    <div class="question__number">Вопрос 1</div>
+    <div class="question__text">Когда у вас возникает техническая проблема, насколько быстро вам приходит в голову обратиться в техподдержку?</div>
+    <div class="nps-scale" id="npsScale"></div>
+    <div class="nps-labels"><span>Не приходит в голову</span><span>В первую очередь</span></div>
+  </div>
+
+  <!-- Q2: Speed -->
+  <div class="question" data-q="2">
+    <div class="question__number">Вопрос 2</div>
+    <div class="question__text">Насколько вы довольны скоростью первого ответа на ваше обращение?</div>
+    <div class="stars" id="starsSpeed"></div>
+  </div>
+
+  <!-- Q3: Resolution -->
+  <div class="question" data-q="3">
+    <div class="question__number">Вопрос 3</div>
+    <div class="question__text">Решается ли ваш вопрос полностью в большинстве обращений?</div>
+    <div class="options" id="optResolved">
+      <button data-val="yes">Да, как правило</button>
+      <button data-val="partial">Частично</button>
+      <button data-val="no">Нет</button>
+    </div>
+  </div>
+
+  <!-- Q4: Clarity -->
+  <div class="question" data-q="4">
+    <div class="question__number">Вопрос 4</div>
+    <div class="question__text">Насколько понятно специалист техподдержки объясняет ход решения при ответах?</div>
+    <div class="stars" id="starsClarity"></div>
+  </div>
+
+  <!-- Q5: Channel convenience -->
+  <div class="question" data-q="5">
+    <div class="question__number">Вопрос 5</div>
+    <div class="question__text">Удобно ли вам обращаться через текущие каналы связи?</div>
+    <div class="stars" id="starsChannel"></div>
+  </div>
+
+  <!-- Q6: Proactivity -->
+  <div class="question" data-q="6">
+    <div class="question__number">Вопрос 6</div>
+    <div class="question__text">Предлагает ли специалист техподдержки дополнительные решения или советы, чтобы проблема не повторилась?</div>
+    <div class="options" id="optProactive">
+      <button data-val="yes">Да</button>
+      <button data-val="no">Нет</button>
+    </div>
+  </div>
+
+  <!-- Q7: Open -->
+  <div class="question" data-q="7">
+    <div class="question__number">Вопрос 7</div>
+    <div class="question__text">Что мы можем улучшить в работе техподдержки?</div>
+    <textarea class="open-text" id="openText" placeholder="Напишите ваши мысли, пожелания или замечания..."></textarea>
+  </div>
+
+  <div class="nav" id="nav">
+    <button class="btn btn--ghost" id="prevBtn" disabled>← Назад</button>
+    <button class="btn btn--primary" id="nextBtn">Далее →</button>
+  </div>
+
+  <div class="thankyou" id="thankyou">
+    <svg width="64" height="64" viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="30" stroke="#C9A84C" stroke-width="2"/><path d="M20 33l8 8 16-18" stroke="#C9A84C" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <h2>Спасибо за обратную связь!</h2>
+    <p>Твои ответы помогут нам улучшить нашу работу вместе.<br>Ты крутой! Мы ценим тебя ❤️</p>
+  </div>
+</div>
+
+<script>
+  const answers = {};
+  let current = 1;
+  const total = 7;
+
+  const qs = document.querySelectorAll('.question');
+  const progBar = document.getElementById('progBar');
+  const progLabel = document.getElementById('progLabel');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  const nav = document.getElementById('nav');
+  const thankyou = document.getElementById('thankyou');
+
+  // NPS scale 0-10
+  const npsScale = document.getElementById('npsScale');
+  for(let i=0;i<=10;i++){
+    const b = document.createElement('button');
+    b.textContent = i;
+    b.addEventListener('click',()=>{
+      npsScale.querySelectorAll('button').forEach(x=>x.classList.remove('selected'));
+      b.classList.add('selected');
+      answers[1] = i;
+    });
+    npsScale.appendChild(b);
+  }
+
+  function buildStars(el, qNum){
+    for(let i=1;i<=5;i++){
+      const b = document.createElement('button');
+      b.innerHTML = '★';
+      b.addEventListener('click',()=>{
+        answers[qNum] = i;
+        el.querySelectorAll('button').forEach((s,idx)=>{
+          s.classList.toggle('lit', idx < i);
+        });
+      });
+      el.appendChild(b);
+    }
+  }
+  buildStars(document.getElementById('starsSpeed'), 2);
+  buildStars(document.getElementById('starsClarity'), 4);
+  buildStars(document.getElementById('starsChannel'), 5);
+
+  function setupOptions(el, qNum){
+    el.querySelectorAll('button').forEach(b=>{
+      b.addEventListener('click',()=>{
+        el.querySelectorAll('button').forEach(x=>x.classList.remove('selected'));
+        b.classList.add('selected');
+        answers[qNum] = b.dataset.val;
+      });
+    });
+  }
+  setupOptions(document.getElementById('optResolved'), 3);
+  setupOptions(document.getElementById('optProactive'), 6);
+
+  function showQ(n){
+    qs.forEach(q=>q.classList.remove('active'));
+    document.querySelector(`.question[data-q="${n}"]`).classList.add('active');
+    progBar.style.width = (n/total*100)+'%';
+    progLabel.textContent = `Вопрос ${n} из ${total}`;
+    prevBtn.disabled = n === 1;
+    nextBtn.textContent = n === total ? 'Отправить' : 'Далее →';
+  }
+
+  nextBtn.addEventListener('click',()=>{
+    if(current === 7){
+      const t = document.getElementById('openText').value;
+      if(t) answers[7] = t;
+      console.log('NPS Results:', JSON.stringify(answers, null, 2));
+      qs.forEach(q=>q.classList.remove('active'));
+      nav.style.display = 'none';
+      document.querySelector('.progress').style.display = 'none';
+      progLabel.style.display = 'none';
+      thankyou.classList.add('active');
+      return;
+    }
+    current++;
+    showQ(current);
+  });
+
+  prevBtn.addEventListener('click',()=>{
+    if(current > 1){ current--; showQ(current); }
+  });
+</script>
+</body>
+</html>
